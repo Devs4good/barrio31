@@ -8,3 +8,5 @@ backend/barrio31/services/__pycache__/
 barrio31/venv
 
 *.db
+
+venv/

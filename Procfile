@@ -1,0 +1,1 @@
+web: gunicorn barrio31.app:app

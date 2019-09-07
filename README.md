@@ -1,5 +1,14 @@
-## Mapa Barrio 31
+# barrio 31 backend
 
-# Descripcion
+```
+python -m venv venv
+```
 
-Estamos haciendo el proyecto apa barrio 31 para la mejor localización de las personas, bomberos, policias o entes que deseen ingresar dentro del barrio 31.
+```
+source venv/bin/activate
+```
+
+
+```
+pip install -r requirements.txt
+```
