@@ -1,7 +1,7 @@
 import uuid
 from datetime import datetime
 from sqlalchemy import Column, String, JSON, DateTime
-from database.data_base import DbEntity
+from barrio31.database.data_base import DbEntity
 
 
 class Place(DbEntity):

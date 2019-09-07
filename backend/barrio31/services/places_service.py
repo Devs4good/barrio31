@@ -1,5 +1,5 @@
 import logging
-from entities.place import Place
+from barrio31.entities.place import Place
 
 
 class PlacesService:

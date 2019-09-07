@@ -2,8 +2,8 @@ import logging
 from logging.config import dictConfig
 
 from flask import Flask, jsonify, request
-from database.data_base import Database
-from services.places_service import PlacesService
+from barrio31.database.data_base import Database
+from barrio31.services.places_service import PlacesService
 
 dictConfig({
     'version': 1,
