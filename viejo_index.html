@@ -1,0 +1,157 @@
+<html>
+<head>
+<title>My Sample</title>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> 
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/maphilight/1.4.0/jquery.maphilight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css">
+
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>      
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/perliedman-leaflet-control-geocoder/1.5.5/Control.Geocoder.min.css" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/perliedman-leaflet-control-geocoder/1.5.5/Control.Geocoder.min.js"></script>
+
+
+
+
+<style>
+  .marcadorLugar {
+    position: absolute;
+    display: block;
+    z-index: 3;
+    width: 32px;
+    height: 32px;
+    background: url("http://www.reddit.com/static/blog_snoo.png");
+    cursor: pointer;
+  }
+  
+</style>
+  
+<script type="text/javascript"> 
+
+window.lugares = {};
+
+var lugaresGuardados = window.localStorage.getItem("lugares");
+if(lugaresGuardados) {
+  try {
+    window.lugares = JSON.parse(lugaresGuardados);
+  } catch (e) {
+    console.error(e); 
+  }
+
+}
+
+function guardarLugar(lugar) {
+  window.lugares[submapa] = window.lugares[submapa] || [];
+  window.lugares[submapa].push(lugar);
+  window.localStorage.setItem('lugares', JSON.stringify(window.lugares));
+}
+
+function mostrarUnLugar(lugar) {
+  var newElement = $('<div class="marcadorLugar"></div>');
+  newElement.css({
+            "left":     lugar.posX,
+            "top":      lugar.posY
+        });
+  newElement.attr('title', lugar.nombre);
+  $("#vista_sector").append(newElement);
+};
+
+function mostrarLugares() {
+  var lugaresSubmapa = window.lugares[submapa] || [];
+  lugaresSubmapa.forEach(function (lugar) {
+    mostrarUnLugar(lugar);
+  })
+}
+
+function mostrarEmbebido() {
+  $('#vista_embebido').show();
+  var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+      var map = L.map('map').setView([-34.58466, -58.37792], 17).addLayer(osm);
+      L.marker([-34.58466, -58.37792])
+          .addTo(map)
+          .bindPopup('Algun lugar en el Barrio 31')
+          .openPopup();
+
+      L.Routing.control({
+        waypoints: [
+          L.latLng(-34.58466, -58.37792),
+          L.latLng(-34.58457, -58.38110)
+        ]
+        }).addTo(map);
+}
+jQuery(document).ready(function(){ 
+  $('#mapa_inicial').maphilight();
+
+  $("area").on("click", function (event) {
+    event.preventDefault();
+    window.submapa = event.target.attributes["data-submapa"].value;
+    var src_submapa = "mapa_" + submapa + ".png";
+    $("#img_submapa").attr("src", src_submapa);
+    //$("#vista_sector").show();
+    //mostrarLugares();
+    mostrarEmbebido();
+    $("#vista_principal").hide();
+  });
+
+  $("#btn_cargar_lugares").on("click", function (event) {
+    $("#img_submapa").on("click.carga", function (eventCarga) {
+      var posX = eventCarga.originalEvent.pageX - this.offsetLeft;
+      var posY = eventCarga.originalEvent.pageY - this.offsetTop;
+      var nombreLugar = prompt("Como se llama el lugar");
+      var lugar = {nombre: nombreLugar, posX: posX, posY: posY};
+      mostrarUnLugar(lugar)
+      guardarLugar(lugar);
+      $("#img_submapa").unbind("click.carga");
+      $("#img_submapa").css({"cursor": "auto"});
+      $.toast({
+        text : 'Lugar cargado',
+        hideAfter : 1000,
+        bgColor : 'green'
+      });
+    });
+    $("#img_submapa").css("cursor", "pointer");
+  });
+
+});
+
+
+</script>
+</head>
+<body>
+  <div id="vista_principal" >
+
+    <img src="mapa_inicial.jpeg" usemap="#image-map" id="mapa_inicial">
+
+    <map name="image-map">
+        <area target="" data-submapa="9" title="Sector 9 - Playón Este" href="" coords="752,345,785,420,915,423,923,352" shape="poly">
+        <area target="" title="Sector 10 - Barrio San Martín" href="" coords="923,385,918,423,996,420,1195,416,1205,404,1158,394" shape="poly">
+        <area target="" title="Sector 8 - Ferroviario" href="" coords="771,419,763,379,614,364,488,360,483,381,576,387,580,394,717,420" shape="poly">
+        <area target="" title="Sector 6 - Barrio Chino" href="" coords="357,301,349,374,482,377,484,358,609,356,604,334,613,310,591,299" shape="poly">
+        <area target="" title="Sector 5 - Barrio Cristo Obrero" href="" coords="112,390,227,398,349,372,354,301,149,288,137,296,137,311,248,321,250,354" shape="poly">
+        <area target="" title="Sector 4 - Correo" href="#" coords="356,169,378,240,405,247,405,288,204,279,194,268" shape="poly">
+        <area target="" title="Sector 3 - Depósito YPF" href="#" coords="462,167,374,201,381,233,412,248,409,287,700,307,713,243,522,248,512,239,421,233,425,205" shape="poly">
+        <area target="" title="Sector 1 - Güemes" href="#" coords="724,224,702,304,751,334,919,338,910,320,915,311,933,303,932,236" shape="poly">
+        <area target="" title="Sector 7 - Playón Oeste" href="#" coords="621,307,607,331,613,354,756,371,744,339,706,313" shape="poly">
+        <area target="" title="Sector 2" href="#" coords="752,144,745,210,832,224,845,152" shape="poly">
+    </map>
+  </div>
+
+  <div id="vista_sector" style="display: none">
+    <img id="img_submapa" />
+    <button id="btn_cargar_lugares">Cargar Lugar</button>
+  </div>
+
+  <div id="vista_embebido" style="display: none" >
+    <div id="map" class="map map-home" style="margin:12px 0 12px 0;height:400px;"></div>
+  </div>
+</body>
+</html>
