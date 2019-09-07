@@ -1,1 +1,1 @@
-web: gunicorn barrio31.app:app
+web: gunicorn backend.barrio31.app:app
