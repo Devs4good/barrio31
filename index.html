@@ -45,23 +45,37 @@
 
     <script type="text/javascript"> 
 
-      function mostrarEmbebido() {
+      var puntos = [
+        {id: 1, nombre: "feria", coordenadas: {lat: -34.58417, lon: -58.37573}},
+        {id: 2, nombre: "cedel", coordenadas: {lat: -34.5859, lon: -58.3777}}
+      ];
+
+      function etiquetarEnMapa(map, punto) {
+        L.marker([punto.coordenadas.lat, punto.coordenadas.lon])
+            .addTo(map)
+            .bindPopup(punto.nombre)
+            .openPopup();
+      }
+
+      function mostrarRecorrido(desde, hasta) {
         $('#vista_embebido').show();
         var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
            osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
            osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
         var map = L.map('map').setView([-34.58466, -58.37792], 17).addLayer(osm);
         
-        L.marker([-34.58466, -58.37792])
-            .addTo(map)
-            .bindPopup('Algun lugar en el Barrio 31')
-            .openPopup();
-      
+        //etiquetarEnMapa(map, desde);
+        //etiquetarEnMapa(map, hasta);
+
         var routing = L.Routing.control({
           waypoints: [
-            L.latLng(-34.58466, -58.37792),
-            L.latLng(-34.58457, -58.38110)
-          ]
+            L.latLng(desde.coordenadas.lat, desde.coordenadas.lon),
+            L.latLng(hasta.coordenadas.lat, hasta.coordenadas.lon)
+          ],
+          createMarker: function(waypointIndex, waypoint, numberOfWaypoints) {
+            return L.marker(waypoint.latLng)
+                .bindPopup(waypointIndex == 0 ? desde.nombre : hasta.nombre);
+        },
         });
       
         routing.on('routingerror', function (error) {
@@ -70,9 +84,29 @@
         routing.addTo(map);
       }
       
+      function cargarRutas() {
+        var selectDesde = $("#desde")[0];
+        var selectHasta = $("#hasta")[0];
+
+        puntos.forEach(function (punto) {
+          selectDesde.add(new Option(punto.nombre, punto.id));
+          selectHasta.add(new Option(punto.nombre, punto.id));
+        })
+      }
+
+      function buscarPuntoPorId(id) {
+        return puntos.filter(function (p) { return p.id == id;})[0];
+      }
+
       jQuery(document).ready(function(){ 
+        cargarRutas();
         $("#button_ir").on("click", function (event) {
-          mostrarEmbebido();
+          var desde = buscarPuntoPorId(parseInt($("#desde").val()));
+          var hasta = buscarPuntoPorId(parseInt($("#hasta").val()));
+          
+          //var desde = {nombre: "feria", coordenadas: {lat: -34.58417, lon: -58.37573}};
+          //var hasta = {nombre: "cedel", coordenadas: {lat: -34.5859, lon: -58.3777}};
+          mostrarRecorrido(desde, hasta);
           $("#vista_principal").hide();
         });
       });
@@ -107,6 +141,10 @@
           <li><a href="#">Galpon</a></li>
           </ul>
         </span>
+
+        <select id="desde"></select>
+        <select id="hasta"></select>
+
         <button type="button" class="btn btn-lg btn-success" id="button_ir">Ir</button>
       </div>
         
