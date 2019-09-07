@@ -23,12 +23,6 @@
 
     <!-- Custom styles for this template -->
     <link href="theme.css" rel="stylesheet">
-	
-	
-	
-    <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
-    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
-    <script src="./bootstrap-3.4.1-dist/js/ie-emulation-modes-warning.js"></script>
 
 
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> 
@@ -46,15 +40,16 @@
     <script type="text/javascript"> 
 
 
-
+      //TODO: pegarle al backend posta
       $.getJSON("http://dummy.restapiexample.com/api/v1/employees" // https://barrio31.herokuapp.com/places",
         ,function(response) {
           //window.puntos = response;
             window.puntos = [
               {id: "1", nombre: "feria", coordenadas: {lat: -34.58417, lon: -58.37573}},
-              {id: "2", nombre: "cedel", coordenadas: {lat: -34.5859, lon: -58.3777}}
+              {id: "2", nombre: "cedel", coordenadas: {lat: -34.5859, lon: -58.3777}},
+              {id: "3", nombre: "casi casa", coordenadas: {lat: -34.58423, lon: -58.38008}},
             ];
-            cargarRutas();
+            cargarRutasEnDropdowns();
     });
 
       function mostrarRecorrido(desde, hasta) {
@@ -81,7 +76,7 @@
         routing.addTo(map);
       }
       
-      function cargarRutas() {
+      function cargarRutasEnDropdowns() {
         var selectDesde = $("#desde")[0];
         var selectHasta = $("#hasta")[0];
 
@@ -100,8 +95,6 @@
           var desde = buscarPuntoPorId($("#desde").val());
           var hasta = buscarPuntoPorId($("#hasta").val());
           
-          //var desde = {nombre: "feria", coordenadas: {lat: -34.58417, lon: -58.37573}};
-          //var hasta = {nombre: "cedel", coordenadas: {lat: -34.5859, lon: -58.3777}};
           mostrarRecorrido(desde, hasta);
           $("#vista_principal").hide();
         });
@@ -120,49 +113,20 @@
         <div class="jumbotron">		
             <h1>Barrio 31</h1>
             <p>¿Adonde querés ir?</p>
-          </div>
-        
-        <div class="container">
-        <span class="dropdown">
-          <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Origen
-          <span class="caret"></span></button>
-          <ul class="dropdown-menu">
-          <li><a href="#">Feria</a></li>
-          </ul>
-        </span>
-        <span class="dropdown">	
-          <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Destino 
-          <span class="caret"></span></button>
-          <ul class="dropdown-menu">
-          <li><a href="#">Galpon</a></li>
-          </ul>
-        </span>
+        </div>
 
         <select id="desde"></select>
         <select id="hasta"></select>
 
         <button type="button" class="btn btn-lg btn-success" id="button_ir">Ir</button>
-      </div>
-        
-          
-        
+                
         <div class="container">
           <img src= "Barrio_31.svg"/>
         </div>
+
+      </div>
         
         
-        
-
-
-      
-	
-	
-
-
-    </div> <!-- /container -->
-
-
-
     <div id="vista_embebido" style="display: none" class="container" >
       <div id="map" class="map map-home" style="margin:12px 0 12px 0;height:700px;"></div>
     </div>
@@ -172,8 +136,5 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="../../assets/js/docs.min.js"></script>
-    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-    <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
   </body>
 </html>
