@@ -59,7 +59,7 @@ def map_places(place_id):
         pass
 
     else:
-        pass
+        jsonify(), 400
 
 
 @app.route('/places', methods=['GET', 'POST', 'DELETE'])
