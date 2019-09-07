@@ -39,17 +39,22 @@
 
     <script type="text/javascript"> 
 
+      //poner en true cuando las rutas que devuelva sean posta
+      var usoRutasDeBackend = false;
 
-      //TODO: pegarle al backend posta
-      $.getJSON("http://dummy.restapiexample.com/api/v1/employees" // https://barrio31.herokuapp.com/places",
-        ,function(response) {
-          //window.puntos = response;
-            window.puntos = [
-              {id: "1", nombre: "feria", coordenadas: {lat: -34.58417, lon: -58.37573}},
-              {id: "2", nombre: "cedel", coordenadas: {lat: -34.5859, lon: -58.3777}},
-              {id: "3", nombre: "casi casa", coordenadas: {lat: -34.58423, lon: -58.38008}},
-            ];
-            cargarRutasEnDropdowns();
+      $.getJSON("https://barrio31.herokuapp.com/places",function(response) {
+          if(usoRutasDeBackend) {
+            window.puntos = response;
+          }
+          else {
+              window.puntos = [
+                {id: "1", nombre: "feria", coordenadas: {lat: -34.58417, lon: -58.37573}},
+                {id: "2", nombre: "cedel", coordenadas: {lat: -34.5859, lon: -58.3777}},
+                {id: "3", nombre: "casi casa", coordenadas: {lat: -34.58423, lon: -58.38008}},
+              ];
+          }
+
+          cargarRutasEnDropdowns();
     });
 
       function mostrarRecorrido(desde, hasta) {
