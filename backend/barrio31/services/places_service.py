@@ -1,3 +1,4 @@
+import logging
 from entities.place import Place
 
 
@@ -10,7 +11,7 @@ class PlacesService:
         :return:
             lista de todos los lugares disponibles.
         """
-        return Place.get()
+        return [place.to_json() for place in Place.get()]
 
     @classmethod
     def get_place(cls, place_id):
@@ -33,7 +34,13 @@ class PlacesService:
         :return:
             informacion del lugar creado.
         """
-        Place(**place_attributes).save()
+        try:
+            logging.info("Create place {}".format(place_attributes))
+            place = Place(**place_attributes)
+            place.save()
+            return place
+        except Exception as e:
+            logging.error(e)
 
     @classmethod
     def delete_place(self, place_id):
