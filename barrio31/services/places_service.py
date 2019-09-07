@@ -5,13 +5,23 @@ from barrio31.entities.place import Place
 class PlacesService:
 
     @classmethod
-    def get_all(cls):
+    def get_all(cls, entries=None):
         """ Obtener todos los lugares disponibles
 
+        :param entries:
+            si es true, retorna los lugares que son entradas.
+            si es false, retorna los lugares que no son entradas.
+            si es None, retorna todos los lugares.
         :return:
-            lista de todos los lugares disponibles.
+            lista de lugares disponibles.
         """
-        return [place.to_json() for place in Place.get()]
+        category = None
+        if entries is not None:
+            category = "Entry" if entries else "Other"
+
+        places = Place.get(category=category)
+
+        return [place.to_json() for place in places]
 
     @classmethod
     def get_place(cls, place_id):
@@ -23,7 +33,7 @@ class PlacesService:
             informacion del lugar con el id recibido por parametro.
         """
 
-        return Place.get(place_id)
+        return Place.get(id=place_id)
 
     @classmethod
     def create_place(cls, place_attributes):

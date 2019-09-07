@@ -51,7 +51,8 @@ def map_places(place_id):
 @app.route('/places', methods=['GET', 'POST', 'DELETE'])
 def map_places_all():
     if request.method == 'GET':
-        place = PlacesService.get_all()
+        entries = request.args.get('entries', None)
+        place = PlacesService.get_all(entries)
         return jsonify(place), 200
 
     elif request.method == 'POST':
