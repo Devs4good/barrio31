@@ -8,6 +8,7 @@ from flask_cors import CORS
 from barrio31.database.data_base import Database
 from barrio31.services.places_service import PlacesService
 
+
 dictConfig({
     'version': 1,
     'formatters': {'default': {
