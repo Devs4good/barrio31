@@ -2,6 +2,8 @@ import logging
 from logging.config import dictConfig
 
 from flask import Flask, jsonify, request
+from flask_cors import CORS
+
 from barrio31.database.data_base import Database
 from barrio31.services.places_service import PlacesService
 
@@ -25,6 +27,7 @@ dictConfig({
 def create_app():
     flask_app = Flask(__name__)
     flask_app.config.from_pyfile("config.py")
+    CORS(flask_app)
     return flask_app
 
 app = create_app()
