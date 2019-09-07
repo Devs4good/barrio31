@@ -1,7 +1,7 @@
 import logging
 from logging.config import dictConfig
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 
 from barrio31.database.data_base import Database
@@ -25,13 +25,22 @@ dictConfig({
 
 
 def create_app():
-    flask_app = Flask(__name__)
+    flask_app = Flask(__name__, static_folder='static')
     flask_app.config.from_pyfile("config.py")
     CORS(flask_app)
     return flask_app
 
 app = create_app()
 Database(app.config)
+
+@app.route('/', defaults={'path': ''})
+@app.route('/<path:path>')
+def root(path):
+    if path != "" and os.path.exists(app.static_folder + path):
+        return send_from_directory(app.static_folder, path)
+    else:
+        return send_from_directory(app.static_folder, 'index.html')
+
 
 
 @app.route('/ping')
