@@ -1,1 +1,13 @@
 .idea
+barrio31/__pycache__/
+barrio31/database/__pycache__/
+barrio31/entities/__pycache__/
+barrio31/services/__pycache__/
+
+barrio31/venv
+
+*.db
+barrio31/*.pyc
+barrio31/entities/place.pyc
+barrio31/services/places_service.pyc
+venv/
