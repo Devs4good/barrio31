@@ -3,7 +3,8 @@
 <title>My Sample</title>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/maphilight/1.4.0/jquery.maphilight.min.js"></script>
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css">
 <style>
   .marcadorLugar {
     position: absolute;
@@ -48,8 +49,8 @@ function mostrarUnLugar(lugar) {
 };
 
 function mostrarLugares() {
-  var lugares = window.lugares[submapa];
-  lugares.forEach(function (lugar) {
+  var lugaresSubmapa = window.lugares[submapa] || [];
+  lugaresSubmapa.forEach(function (lugar) {
     mostrarUnLugar(lugar);
   })
 }
@@ -74,6 +75,13 @@ jQuery(document).ready(function(){
       var lugar = {nombre: nombreLugar, posX: posX, posY: posY};
       mostrarUnLugar(lugar)
       guardarLugar(lugar);
+      $("#img_submapa").unbind("click.carga");
+      $("#img_submapa").css({"cursor": "auto"});
+      $.toast({
+        text : 'Lugar cargado',
+        hideAfter : 1000,
+        bgColor : 'green'
+      });
     });
     $("#img_submapa").css("cursor", "pointer");
   });
@@ -104,7 +112,7 @@ jQuery(document).ready(function(){
 
   <div id="vista_sector" style="display: none">
     <img id="img_submapa" />
-    <button id="btn_cargar_lugares">Cargar Lugares</button>
+    <button id="btn_cargar_lugares">Cargar Lugar</button>
   </div>
 </body>
 </html>
