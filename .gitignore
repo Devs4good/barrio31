@@ -3,3 +3,6 @@ backend/barrio31/__pycache__/
 backend/barrio31/barrio31.db
 backend/barrio31/database/__pycache__/
 backend/venv/
+backend/barrio31/entities/__pycache__/
+backend/barrio31/services/__pycache__/
+barrio31/venv

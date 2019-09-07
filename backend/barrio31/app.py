@@ -2,8 +2,8 @@ import logging
 from logging.config import dictConfig
 
 from flask import Flask, jsonify, request
-from backend.barrio31.database.data_base import Database
-
+from database.data_base import Database
+from services.places_service import PlacesService
 
 dictConfig({
     'version': 1,
@@ -34,6 +34,24 @@ Database(app.config)
 @app.route('/ping')
 def hello_world():
     return jsonify(dict(pong="Pong")), 200
+
+
+@app.route('/places', methods=['GET', 'POST', 'DELETE'])
+def map_places(place_id):
+    if request.method == 'GET':
+        place = PlacesService.get_place(place_id)
+        return jsonify(place), 200
+
+    elif request.method == 'POST':
+        place_attributes = request.get_json()
+        place = PlacesService.create_place(place_attributes)
+        return jsonify(place), 201
+
+    elif request.method == 'DELETE':
+        pass
+
+    else:
+        pass
 
 
 if __name__ == '__main__':
