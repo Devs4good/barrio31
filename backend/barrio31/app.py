@@ -10,16 +10,17 @@ dictConfig({
     'formatters': {'default': {
         'format': '[%(asctime)s] %(levelname)s in %(module)s: %(message)s',
     }},
-    'handlers': {'wsgi': {
+    'handlers': {'local': {
         'class': 'logging.StreamHandler',
         'stream': 'ext://flask.logging.wsgi_errors_stream',
         'formatter': 'default'
     }},
     'root': {
         'level': 'INFO',
-        'handlers': ['wsgi']
+        'handlers': ['local']
     }
 })
+
 
 def create_app():
     flask_app = Flask(__name__)
@@ -28,6 +29,7 @@ def create_app():
 
 app = create_app()
 Database(app.config)
+
 
 @app.route('/ping')
 def hello_world():
