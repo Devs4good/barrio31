@@ -8,6 +8,17 @@
 
 <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>      
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/perliedman-leaflet-control-geocoder/1.5.5/Control.Geocoder.min.css" />
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/perliedman-leaflet-control-geocoder/1.5.5/Control.Geocoder.min.js"></script>
+
+
+
 
 <style>
   .marcadorLugar {
@@ -58,6 +69,25 @@ function mostrarLugares() {
     mostrarUnLugar(lugar);
   })
 }
+
+function mostrarEmbebido() {
+  $('#vista_embebido').show();
+  var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+      var map = L.map('map').setView([-34.58466, -58.37792], 17).addLayer(osm);
+      L.marker([-34.58466, -58.37792])
+          .addTo(map)
+          .bindPopup('Algun lugar en el Barrio 31')
+          .openPopup();
+
+      L.Routing.control({
+        waypoints: [
+          L.latLng(-34.58466, -58.37792),
+          L.latLng(-34.58457, -58.38110)
+        ]
+        }).addTo(map);
+}
 jQuery(document).ready(function(){ 
   $('#mapa_inicial').maphilight();
 
@@ -68,7 +98,7 @@ jQuery(document).ready(function(){
     $("#img_submapa").attr("src", src_submapa);
     //$("#vista_sector").show();
     //mostrarLugares();
-    $('#vista_embebido').show();
+    mostrarEmbebido();
     $("#vista_principal").hide();
   });
 
@@ -122,16 +152,6 @@ jQuery(document).ready(function(){
 
   <div id="vista_embebido" style="display: none" >
     <div id="map" class="map map-home" style="margin:12px 0 12px 0;height:400px;"></div>
-    <script>
-      var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-          osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-          osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
-      var map = L.map('map').setView([-34.58466, -58.37792], 17).addLayer(osm);
-      L.marker([-34.58466, -58.37792])
-          .addTo(map)
-          .bindPopup('Algun lugar en el Barrio 31')
-          .openPopup();
-  </script>
   </div>
 </body>
 </html>
