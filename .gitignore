@@ -1,1 +1,5 @@
 .idea
+backend/barrio31/__pycache__/
+backend/barrio31/barrio31.db
+backend/barrio31/database/__pycache__/
+backend/venv/
