@@ -5,6 +5,10 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/maphilight/1.4.0/jquery.maphilight.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.js"></script>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-toast-plugin/1.3.2/jquery.toast.min.css">
+
+<script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>      
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css">
+
 <style>
   .marcadorLugar {
     position: absolute;
@@ -62,8 +66,9 @@ jQuery(document).ready(function(){
     window.submapa = event.target.attributes["data-submapa"].value;
     var src_submapa = "mapa_" + submapa + ".png";
     $("#img_submapa").attr("src", src_submapa);
-    $("#vista_sector").show();
-    mostrarLugares();
+    //$("#vista_sector").show();
+    //mostrarLugares();
+    $('#vista_embebido').show();
     $("#vista_principal").hide();
   });
 
@@ -113,6 +118,20 @@ jQuery(document).ready(function(){
   <div id="vista_sector" style="display: none">
     <img id="img_submapa" />
     <button id="btn_cargar_lugares">Cargar Lugar</button>
+  </div>
+
+  <div id="vista_embebido" style="display: none" >
+    <div id="map" class="map map-home" style="margin:12px 0 12px 0;height:400px;"></div>
+    <script>
+      var osmUrl = 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+          osmAttrib = '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+          osm = L.tileLayer(osmUrl, {maxZoom: 18, attribution: osmAttrib});
+      var map = L.map('map').setView([-34.58466, -58.37792], 17).addLayer(osm);
+      L.marker([-34.58466, -58.37792])
+          .addTo(map)
+          .bindPopup('Algun lugar en el Barrio 31')
+          .openPopup();
+  </script>
   </div>
 </body>
 </html>
