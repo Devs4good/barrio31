@@ -38,17 +38,25 @@
     <script type="text/javascript"> 
 
       //poner en true cuando las rutas que devuelva sean posta
-      var usoRutasDeBackend = false;
+      var usoRutasDeBackend = true;
 
       $.getJSON("https://barrio31.herokuapp.com/places",function(response) {
-          if(usoRutasDeBackend) {
-            window.puntos = response;
+		  if(usoRutasDeBackend) {
+            window.puntosEntrada = response;
+			window.puntosSalida = [
+                {id: "2", nombre: "cedel", coordenadas: {lat: -34.5859, lon: -58.3777}},
+                {id: "3", nombre: "casi casa", coordenadas: {lat: -34.58423, lon: -58.38008}}
+              ];
+			
           }
           else {
-              window.puntos = [
+			  window.puntosEntrada = [
+                {id: "1", nombre: "feria", coordenadas: {lat: -34.58417, lon: -58.37573}}
+              ];
+              window.puntosSalida = [
                 {id: "1", nombre: "feria", coordenadas: {lat: -34.58417, lon: -58.37573}},
                 {id: "2", nombre: "cedel", coordenadas: {lat: -34.5859, lon: -58.3777}},
-                {id: "3", nombre: "casi casa", coordenadas: {lat: -34.58423, lon: -58.38008}},
+                {id: "3", nombre: "casi casa", coordenadas: {lat: -34.58423, lon: -58.38008}}
               ];
           }
 
@@ -83,20 +91,26 @@
         var selectDesde = $("#desde")[0];
         var selectHasta = $("#hasta")[0];
 
-        puntos.forEach(function (punto) {
+        puntosEntrada.forEach(function (punto) {
           selectDesde.add(new Option(punto.nombre, punto.id));
+        })
+		puntosSalida.forEach(function (punto) {
           selectHasta.add(new Option(punto.nombre, punto.id));
         })
       }
 
-      function buscarPuntoPorId(id) {
-        return puntos.filter(function (p) { return p.id == id;})[0];
+      function buscarPuntoPorId(id, tipo) {
+        return puntosEntrada.filter(function (p) { return p.id == id;})[0];
       }
-
+	 
+	 function buscarPuntoSalidaPorId(id, tipo) {
+        return puntosSalida.filter(function (p) { return p.id == id;})[0];
+      }
+	 
       jQuery(document).ready(function(){ 
         $("#button_ir").on("click", function (event) {
           var desde = buscarPuntoPorId($("#desde").val());
-          var hasta = buscarPuntoPorId($("#hasta").val());
+          var hasta = buscarPuntoSalidaPorId($("#hasta").val());
           
           mostrarRecorrido(desde, hasta);
           $("#vista_principal").hide();
